@@ -3,3 +3,8 @@
   hosts: all
   roles:
     - role: waco-python
+  vars:
+    - source_python_versions:
+        - 3.8.1
+    - has_python_ansible: true
+    - has_python_mercurial: true

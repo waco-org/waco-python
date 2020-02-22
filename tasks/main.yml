@@ -1,2 +1,117 @@
 ---
-# tasks file for waco-python
+# Workstation as Code
+# Copyright Nicola Musatti 2020.
+
+- name: Create the Python installation group
+  group:
+    name: "{{ python_group }}"
+  become: true
+
+- name: Create the Python installation owner
+  user:
+    name: "{{ python_user }}"
+    group: "{{ python_group }}"
+  become: true
+
+- name: Enable the EPEL repository
+  include_role:
+    name: geerlingguy.repo-epel
+  when: waco_platform != 'Fedora'
+
+- name: Install system Python
+  yum:
+    name:
+      - python2
+      - python3
+    state: present
+  become: true
+
+- name: Install system Python dependencies
+  dnf:
+    name: "{{ sys_python_deps }}"
+    state: present
+  become: true
+  when: waco_platform in ( 'CentOS8', 'Fedora' )
+
+- name: Install system Python dependencies
+  yum:
+    name: "{{ sys_python_deps }}"
+    state: present
+  become: true
+  when: waco_platform == 'CentOS7'
+
+- name: "Create root directory for default virtualenv's"
+  file:
+    dest: "{{ source_venv_root }}"
+    state: directory
+    mode: 0755
+  become: true
+
+- name: Install source Python
+  include_tasks: source-python.yml
+  vars:
+    python_release: "{{ item }}"
+    python_minor: "{{ python_release.split('.')[0] }}.{{ python_release.split('.')[1] }}"
+    python_path: "{{ source_python_root }}/Python-{{ python_minor }}/bin"
+  loop: "{{ source_python_versions }}"
+
+- name: "Register SELinux compatible Python version"
+  set_fact:
+    virtualenv_dir: "{{ source_venv_root }}/{{ source_venv_prefix }}-{{
+    selinux_python_minor }}"
+    virtualenv_command: "{{ source_python_root }}/Python-{{
+    selinux_python_minor }}/bin/virtualenv"
+    virtualenv_python: "{{ source_python_root }}/Python-{{
+    selinux_python_minor }}/bin/python{{ selinux_python_minor }}"
+  when: selinux_python_release is defined
+
+- name: "Register SELinux compatible Python version"
+  set_fact:
+    virtualenv_dir: "{{ system_venv_root }}/{{ system_venv_prefix }}-{{
+    selinux_python_minor }}"
+    virtualenv_command: "/usr/bin/virtualenv"
+    virtualenv_python: "/usr/bin/python{{ selinux_python_minor }}"
+  when: selinux_python_release is not defined
+
+- name: "Create root directory for system virtualenv's"
+  file:
+    dest: "{{ source_venv_root }}"
+    state: directory
+    mode: 0755
+  become: true
+  when: has_python_ansible or has_python_mercurial
+
+- name: "Create base directory for system virtualenv's"
+  file:
+    dest: "{{ virtualenv_dir }}"
+    state: directory
+    mode: 0755
+    group: "{{ python_group }}"
+    owner: "{{ python_user }}"
+  become: true
+  when: has_python_ansible or has_python_mercurial
+
+- name: Install the Ansible virtualenv
+  pip:
+    name:
+      - ansible
+      - molecule
+      - selinux
+    virtualenv: "{{ virtualenv_dir }}/ansible"
+    virtualenv_command: "{{ virtualenv_command }}"
+    virtualenv_python: "{{ virtualenv_python }}"
+  become: true
+  become_user: "{{ python_user }}"
+  when: has_python_ansible
+
+- name: Install Mercurial
+  pip:
+    name:
+      - mercurial
+      - selinux
+    virtualenv: "{{ virtualenv_dir }}/hg"
+    virtualenv_command: "{{ virtualenv_command }}"
+    virtualenv_python: "{{ virtualenv_python }}"
+  become: true
+  become_user: "{{ python_user }}"
+  when: has_python_mercurial

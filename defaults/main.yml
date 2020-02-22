@@ -1,2 +1,37 @@
 ---
-# defaults file for waco-python
+# Workstation as Code
+# Copyright Nicola Musatti 2020.
+
+has_python_ansible: false
+has_python_mercurial: false
+python_user: python
+python_group: "{{ python_user }}"
+source_python_versions:
+  - 3.8.1
+  # - 3.7.6
+  # - 3.6.10
+  # - 3.5.9
+  - 2.7.17
+source_python_root: "/opt"
+source_python_packages:
+  - ipython
+  - pip
+  - setuptools
+  - twine
+  - virtualenv
+  - wheel
+source_venv: "dev"
+source_venv_root: "/opt"
+source_venv_prefix: "venv"
+source_venv_packages:
+  - lxml
+  - pip
+  - ply
+  - pytest
+  - setuptools
+  - six
+  - tox
+  - twine
+  - wheel
+system_venv_root: "/opt"
+system_venv_prefix: "sysvenv"
