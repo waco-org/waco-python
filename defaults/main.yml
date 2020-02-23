@@ -4,6 +4,7 @@
 
 has_python_ansible: false
 has_python_mercurial: false
+has_python_sphinx: false
 python_user: python
 python_group: "{{ python_user }}"
 source_python_versions:
@@ -35,3 +36,10 @@ source_venv_packages:
   - wheel
 system_venv_root: "/opt"
 system_venv_prefix: "sysvenv"
+sphinx_venv: "doc"
+sphinx_python_packages:
+  - hieroglyph
+  - rst2pdf
+  - sphinx
+  - sphinx-intl
+  - sphinx-rtd-theme

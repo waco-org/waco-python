@@ -4,7 +4,7 @@
 
 waco_platform: "{{ ansible_distribution }}{{ 
 ( ansible_distribution == 'CentOS' ) | ternary(ansible_distribution_major_version, '') }}"
-system_python_dependencies:
+platform_python_dependencies:
   CentOS8:
     - python2-pip
     - python2-setuptools
@@ -29,9 +29,14 @@ system_python_dependencies:
     - python3-pip
     - python3-setuptools
     - python3-virtualenv
-sys_python_deps: "{{ system_python_dependencies[waco_platform] }}"
+system_python_deps: "{{ platform_python_dependencies[waco_platform] }}"
 selinux_python_minors:
   CentOS8: "3.6"
   CentOS7: "2.7"
   Fedora: "3.7"
 selinux_python_minor: "{{ selinux_python_minors[waco_platform] }}"
+system_newest_python_minors:
+  CentOS8: "3.6"
+  CentOS7: "3.6"
+  Fedora: "3.7"
+system_newest_python_minor: "{{ system_newest_python_minors[waco_platform] }}"

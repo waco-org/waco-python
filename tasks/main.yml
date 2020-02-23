@@ -26,16 +26,16 @@
     state: present
   become: true
 
-- name: Install system Python dependencies
+- name: "Install system Python dependencies on {{ waco_platform }}"
   dnf:
-    name: "{{ sys_python_deps }}"
+    name: "{{ system_python_deps }}"
     state: present
   become: true
   when: waco_platform in ( 'CentOS8', 'Fedora' )
 
-- name: Install system Python dependencies
+- name: "Install system Python dependencies on {{ waco_platform }}"
   yum:
-    name: "{{ sys_python_deps }}"
+    name: "{{ system_python_deps }}"
     state: present
   become: true
   when: waco_platform == 'CentOS7'
@@ -55,7 +55,7 @@
     python_path: "{{ source_python_root }}/Python-{{ python_minor }}/bin"
   loop: "{{ source_python_versions }}"
 
-- name: "Register SELinux compatible Python version"
+- name: "Register SELinux compatible source virtualenv tools"
   set_fact:
     virtualenv_dir: "{{ source_venv_root }}/{{ source_venv_prefix }}-{{
     selinux_python_minor }}"
@@ -65,53 +65,81 @@
     selinux_python_minor }}/bin/python{{ selinux_python_minor }}"
   when: selinux_python_release is defined
 
-- name: "Register SELinux compatible Python version"
+- name: "Register SELinux compatible system virtualenv tools"
   set_fact:
-    virtualenv_dir: "{{ system_venv_root }}/{{ system_venv_prefix }}-{{
+    selinux_virtualenv_dir: "{{ system_venv_root }}/{{ system_venv_prefix }}-{{
     selinux_python_minor }}"
-    virtualenv_command: "/usr/bin/virtualenv"
-    virtualenv_python: "/usr/bin/python{{ selinux_python_minor }}"
+    selinux_virtualenv_command: "/usr/bin/virtualenv"
+    selinux_virtualenv_python: "/usr/bin/python{{ selinux_python_minor }}"
   when: selinux_python_release is not defined
 
 - name: "Create root directory for system virtualenv's"
   file:
-    dest: "{{ source_venv_root }}"
+    dest: "{{ system_venv_root }}"
     state: directory
     mode: 0755
   become: true
-  when: has_python_ansible or has_python_mercurial
+  when: ( has_python_ansible or has_python_mercurial or has_sphinx ) and selinux_python_release is not defined
 
 - name: "Create base directory for system virtualenv's"
   file:
-    dest: "{{ virtualenv_dir }}"
+    dest: "{{ selinux_virtualenv_dir }}"
     state: directory
     mode: 0755
     group: "{{ python_group }}"
     owner: "{{ python_user }}"
   become: true
-  when: has_python_ansible or has_python_mercurial
+  when: ( has_python_ansible or has_python_mercurial or has_sphinx ) and selinux_python_release is not defined
 
-- name: Install the Ansible virtualenv
+- name: Install Ansible and Molecule in a virtualenv
   pip:
     name:
       - ansible
-      - molecule
+      - molecule[docker]
       - selinux
-    virtualenv: "{{ virtualenv_dir }}/ansible"
-    virtualenv_command: "{{ virtualenv_command }}"
-    virtualenv_python: "{{ virtualenv_python }}"
+    virtualenv: "{{ selinux_virtualenv_dir }}/ansible"
+    virtualenv_command: "{{ selinux_virtualenv_command }}"
+    virtualenv_python: "{{ selinux_virtualenv_python }}"
   become: true
   become_user: "{{ python_user }}"
   when: has_python_ansible
 
-- name: Install Mercurial
+- name: Install Mercurial in virtualenv
   pip:
     name:
       - mercurial
       - selinux
-    virtualenv: "{{ virtualenv_dir }}/hg"
-    virtualenv_command: "{{ virtualenv_command }}"
-    virtualenv_python: "{{ virtualenv_python }}"
+    virtualenv: "{{ selinux_virtualenv_dir }}/hg"
+    virtualenv_command: "{{ selinux_virtualenv_command }}"
+    virtualenv_python: "{{ selinux_virtualenv_python }}"
   become: true
   become_user: "{{ python_user }}"
   when: has_python_mercurial
+
+- name: "Register most recent source virtualenv tools"
+  set_fact:
+    newest_virtualenv_dir: "{{ source_venv_root }}/{{ source_venv_prefix }}-{{
+    newest_python_minor }}"
+    newest_virtualenv_command: "{{ source_python_root }}/Python-{{
+    newest_python_minor }}/bin/virtualenv"
+    newest_virtualenv_python: "{{ source_python_root }}/Python-{{
+    newest_python_minor }}/bin/python{{ newest_python_minor }}"
+  when: newest_python_release is defined
+
+- name: "Register most recent system virtualenv tools"
+  set_fact:
+    newest_virtualenv_dir: "{{ system_venv_root }}/{{ system_venv_prefix }}-{{
+    system_newest_python_minor }}"
+    newest_virtualenv_command: "/usr/bin/virtualenv"
+    newest_virtualenv_python: "/usr/bin/python{{ system_newest_python_minor }}"
+  when: newest_python_release is not defined
+
+- name: Install Sphinx in a virtualenv
+  pip:
+    name: "{{ sphinx_python_packages }}"
+    virtualenv: "{{ newest_virtualenv_dir }}/{{ sphinx_venv }}"
+    virtualenv_command: "{{ newest_virtualenv_command }}"
+    virtualenv_python: "{{ newest_virtualenv_python }}"
+  become: true
+  become_user: "{{ python_user }}"
+  when: has_python_sphinx

@@ -8,3 +8,4 @@
         - 3.8.1
     - has_python_ansible: true
     - has_python_mercurial: true
+    - has_python_sphinx: true
