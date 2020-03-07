@@ -26,14 +26,14 @@
     state: present
   become: true
 
-- name: "Install system Python dependencies on {{ waco_platform }}"
+- name: "Install system Python dependencies on CentOS 8 and Fedora"
   dnf:
     name: "{{ system_python_deps }}"
     state: present
   become: true
   when: waco_platform in ( 'CentOS8', 'Fedora' )
 
-- name: "Install system Python dependencies on {{ waco_platform }}"
+- name: "Install system Python dependencies on CentOS 7"
   yum:
     name: "{{ system_python_deps }}"
     state: present
