@@ -4,7 +4,7 @@
 
 has_python_ansible: false
 has_python_mercurial: false
-has_python_sphinx: false
+has_sphinx: false
 python_user: python
 python_group: "{{ python_user }}"
 source_python_versions:

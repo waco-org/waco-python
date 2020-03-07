@@ -142,4 +142,4 @@
     virtualenv_python: "{{ newest_virtualenv_python }}"
   become: true
   become_user: "{{ python_user }}"
-  when: has_python_sphinx
+  when: has_sphinx
