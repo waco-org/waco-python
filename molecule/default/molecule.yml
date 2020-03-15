@@ -13,10 +13,12 @@ platforms:
     image: docker.io/pycontribs/centos:7
     pre_build_image: true
   - name: centos8
-    image: docker.io/pycontribs/centos:8
+    # image: docker.io/pycontribs/centos:8
+    image: nmusatti/centos8-pys
     pre_build_image: true
   - name: fedora
-    image: docker.io/pycontribs/fedora
+    # image: docker.io/pycontribs/fedora
+    image: nmusatti/fedora-pys
     pre_build_image: true
 provisioner:
   name: ansible
