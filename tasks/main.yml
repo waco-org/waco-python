@@ -57,11 +57,11 @@
 
 - name: "Register SELinux compatible source virtualenv tools"
   set_fact:
-    virtualenv_dir: "{{ source_venv_root }}/{{ source_venv_prefix }}-{{
+    selinux_virtualenv_dir: "{{ source_venv_root }}/{{ source_venv_prefix }}-{{
     selinux_python_minor }}"
-    virtualenv_command: "{{ source_python_root }}/Python-{{
+    selinux_virtualenv_command: "{{ source_python_root }}/Python-{{
     selinux_python_minor }}/bin/virtualenv"
-    virtualenv_python: "{{ source_python_root }}/Python-{{
+    selinux_virtualenv_python: "{{ source_python_root }}/Python-{{
     selinux_python_minor }}/bin/python{{ selinux_python_minor }}"
   when: selinux_python_release is defined
 
@@ -69,7 +69,8 @@
   set_fact:
     selinux_virtualenv_dir: "{{ system_venv_root }}/{{ system_venv_prefix }}-{{
     selinux_python_minor }}"
-    selinux_virtualenv_command: "/usr/bin/virtualenv"
+    selinux_virtualenv_command: "/usr/bin/virtualenv{{
+    ( waco_platform == 'Fedora' ) | ternary ('', '-' + selinux_python_minor) }}"
     selinux_virtualenv_python: "/usr/bin/python{{ selinux_python_minor }}"
   when: selinux_python_release is not defined
 
@@ -130,7 +131,8 @@
   set_fact:
     newest_virtualenv_dir: "{{ system_venv_root }}/{{ system_venv_prefix }}-{{
     system_newest_python_minor }}"
-    newest_virtualenv_command: "/usr/bin/virtualenv"
+    newest_virtualenv_command: "/usr/bin/virtualenv{{
+    ( waco_platform == 'Fedora' ) | ternary ('', '-' + system_newest_python_minor) }}"
     newest_virtualenv_python: "/usr/bin/python{{ system_newest_python_minor }}"
   when: newest_python_release is not defined
 
