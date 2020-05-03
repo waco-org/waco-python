@@ -96,8 +96,13 @@
   pip:
     name:
       - ansible
+      - ansible-lint
+      - flake8
       - molecule[docker]
+      - pytest
       - selinux
+      - testinfra
+      - yamllint
     virtualenv: "{{ selinux_virtualenv_dir }}/ansible"
     virtualenv_command: "{{ selinux_virtualenv_command }}"
     virtualenv_python: "{{ selinux_virtualenv_python }}"
