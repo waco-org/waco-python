@@ -23,7 +23,7 @@ platform_python_dependencies:
     - python36-setuptools
     - python36-virtualenv
   Fedora:
-    - python2-pip
+    # - python2-pip
     - python2-setuptools
     # - python2-virtualenv
     - python3-libselinux
