@@ -8,10 +8,10 @@ has_sphinx: false
 python_user: python
 python_group: "{{ python_user }}"
 source_python_versions:
-  - 3.8.5
+  - 3.9.0
+  - 3.8.6
   - 3.7.9
   - 3.6.12
-  - 3.5.10
   - 2.7.18
 source_python_root: "/opt"
 source_python_packages:

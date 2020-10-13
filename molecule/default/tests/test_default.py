@@ -24,23 +24,23 @@ def test_python2(host):
 
 
 def test_source_python(host):
-    f = host.file('/opt/Python-3.8/bin/python3.8')
+    f = host.file('/opt/Python-3.9/bin/python3.9')
     assert f.exists
     assert f.user == 'python'
     assert f.group == 'python'
 
-    host.check_output('/opt/Python-3.8/bin/python3.8 --version').find(
-            '3.8.1') > -1
+    host.check_output('/opt/Python-3.9/bin/python3.9 --version').find(
+            '3.9.0') > -1
 
 
 def test_venv_python(host):
-    f = host.file('/opt/venv-3.8/dev/bin/python3.8')
+    f = host.file('/opt/venv-3.9/dev/bin/python3.9')
     assert f.exists
     assert f.user == 'python'
     assert f.group == 'python'
 
-    host.check_output('/opt/venv-3.8/dev/bin/python3.8 --version').find(
-            '3.8.1') > -1
+    host.check_output('/opt/venv-3.9/dev/bin/python3.9 --version').find(
+            '3.9.0') > -1
 
 
 def test_ansible(host):

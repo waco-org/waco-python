@@ -6,6 +6,9 @@ waco_platform: "{{ ansible_distribution }}{{
 ( ansible_distribution == 'CentOS' ) | ternary(ansible_distribution_major_version, '') }}"
 platform_python_dependencies:
   CentOS8:
+    - libjpeg-turbo-devel
+    - libxml2-devel
+    - libxslt-devel
     - python2-pip
     - python2-setuptools
     - python2-virtualenv
@@ -14,8 +17,11 @@ platform_python_dependencies:
     - python3-setuptools
     - python3-virtualenv
   CentOS7:
+    - libjpeg-turbo-devel
     - libselinux-python
     - libselinux-python3
+    - libxml2-devel
+    - libxslt-devel
     - python-setuptools
     - python-virtualenv
     - python2-pip
@@ -23,6 +29,9 @@ platform_python_dependencies:
     - python36-setuptools
     - python36-virtualenv
   Fedora:
+    - libjpeg-turbo-devel
+    - libxml2-devel
+    - libxslt-devel
     # - python2-pip
     - python2-setuptools
     # - python2-virtualenv
@@ -33,14 +42,11 @@ platform_python_dependencies:
 system_python_deps: "{{ platform_python_dependencies[waco_platform] }}"
 selinux_python_minors:
   CentOS8: "3.6"
-  # CentOS7: "2.7"
   CentOS7: "3.6"
-  # Fedora: "3.7"
   Fedora: "3.8"
 selinux_python_minor: "{{ selinux_python_minors[waco_platform] }}"
 system_newest_python_minors:
   CentOS8: "3.6"
   CentOS7: "3.6"
-  # Fedora: "3.7"
   Fedora: "3.8"
 system_newest_python_minor: "{{ system_newest_python_minors[waco_platform] }}"
