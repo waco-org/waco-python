@@ -10,39 +10,39 @@
   include_role:
     name: bobbyrenwick.pip
   vars:
-    - python: "{{ source_python_root }}/Python-{{ python_minor }}/bin/python{{ python_minor }}"
-    - pip: "{{ source_python_root }}/Python-{{ python_minor }}/bin/pip{{ python_minor }}"
+    - python: "{{ wapy_source_root_dir }}/Python-{{ python_minor }}/bin/python{{ python_minor }}"
+    - pip: "{{ wapy_source_root_dir }}/Python-{{ python_minor }}/bin/pip{{ python_minor }}"
 
 - name: "Install standard packages on Python {{ python_release }}"
   pip:
-    name: "{{ source_python_packages }}"
-    executable: "{{ source_python_root }}/Python-{{ python_minor }}/bin/pip{{ python_minor }}"
+    name: "{{ wapy_source_packages }}"
+    executable: "{{ wapy_source_root_dir }}/Python-{{ python_minor }}/bin/pip{{ python_minor }}"
     state: present
   become: true
-  become_user: "{{ python_user }}"
+  become_user: "{{ wapy_user }}"
 
 - name: "Create base virtualenv directory for Python {{ python_release }}"
   file:
-    dest: "{{ source_venv_root }}/{{ source_venv_prefix }}-{{ python_minor }}"
+    dest: "{{ wapy_source_venv_root_dir }}/{{ wapy_source_venv_prefix }}-{{ python_minor }}"
     state: directory
     mode: 0755
-    group: "{{ python_group }}"
-    owner: "{{ python_user }}"
+    group: "{{ wapy_group }}"
+    owner: "{{ wapy_user }}"
   become: true
 
 - name: "Install the default virtualenv for Python {{ python_release }}"
   pip:
-    name: "{{ source_venv_packages }}"
-    virtualenv: "{{ source_venv_root }}/{{ source_venv_prefix }}-{{ python_minor }}/{{ source_venv }}"
-    virtualenv_command: "{{ source_python_root }}/Python-{{ python_minor }}/bin/virtualenv"
-    virtualenv_python: "{{ source_python_root }}/Python-{{ python_minor }}/bin/python{{ python_minor }}"
+    name: "{{ wapy_source_venv_packages }}"
+    virtualenv: "{{ wapy_source_venv_root_dir }}/{{ wapy_source_venv_prefix }}-{{ python_minor }}/{{ wapy_source_venv }}"
+    virtualenv_command: "{{ wapy_source_root_dir }}/Python-{{ python_minor }}/bin/virtualenv"
+    virtualenv_python: "{{ wapy_source_root_dir }}/Python-{{ python_minor }}/bin/python{{ python_minor }}"
   become: true
-  become_user: "{{ python_user }}"
+  become_user: "{{ wapy_user }}"
 
 - name: "Register SELinux compatible release"
   set_fact:
     selinux_python_release: "{{ python_release }}"
-  when: selinux_python_minor == python_minor
+  when: wapy_selinux_python_minor == python_minor
 
 - name: "Register the most recent source release"
   set_fact:

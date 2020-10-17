@@ -2,29 +2,29 @@
 # Workstation as Code
 # Copyright Nicola Musatti 2020.
 
-has_python_ansible: false
-has_python_mercurial: false
-has_sphinx: false
-python_user: python
-python_group: "{{ python_user }}"
-source_python_versions:
+wapy_has_ansible: false
+wapy_has_mercurial: false
+wapy_has_sphinx: false
+wapy_user: python
+wapy_group: "{{ wapy_user }}"
+wapy_source_versions:
   - 3.9.0
-  - 3.8.6
-  - 3.7.9
-  - 3.6.12
-  - 2.7.18
-source_python_root: "/opt"
-source_python_packages:
+  # - 3.8.6
+  # - 3.7.9
+  # - 3.6.12
+  # - 2.7.18
+wapy_source_root_dir: "/opt"
+wapy_source_packages:
   - ipython
   - pip
   - setuptools
   - twine
   - virtualenv
   - wheel
-source_venv: "dev"
-source_venv_root: "/opt"
-source_venv_prefix: "venv"
-source_venv_packages:
+wapy_source_venv: "dev"
+wapy_source_venv_root_dir: "/opt"
+wapy_source_venv_prefix: "venv"
+wapy_source_venv_packages:
   - lxml
   - pip
   - ply
@@ -34,10 +34,10 @@ source_venv_packages:
   - tox
   - twine
   - wheel
-system_venv_root: "/opt"
-system_venv_prefix: "sysvenv"
-sphinx_venv: "doc"
-sphinx_python_packages:
+wapy_system_venv_root_dir: "/opt"
+wapy_system_venv_prefix: "sysvenv"
+wapy_sphinx_venv: "doc"
+wapy_sphinx_packages:
   - hieroglyph
   - rst2pdf
   - sphinx
