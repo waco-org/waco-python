@@ -5,18 +5,23 @@
 - name: "Install Python {{ python_release }} from source"
   include_role:
     name: nmusatti.source_python
+  vars:
+    python_group: "{{ wapy_group }}"
+    python_user: "{{ wapy_user }}"
+    python_src_dir: "{{ wapy_build_root_dir }}/python"
+    python_install_dir: "{{ wapy_install_root_dir }}"
 
 - name: "Install pip for Python {{ python_release }}"
   include_role:
     name: bobbyrenwick.pip
   vars:
-    - python: "{{ wapy_source_root_dir }}/Python-{{ python_minor }}/bin/python{{ python_minor }}"
-    - pip: "{{ wapy_source_root_dir }}/Python-{{ python_minor }}/bin/pip{{ python_minor }}"
+    - python: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/python{{ python_minor }}"
+    - pip: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/pip{{ python_minor }}"
 
 - name: "Install standard packages on Python {{ python_release }}"
   pip:
     name: "{{ wapy_source_packages }}"
-    executable: "{{ wapy_source_root_dir }}/Python-{{ python_minor }}/bin/pip{{ python_minor }}"
+    executable: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/pip{{ python_minor }}"
     state: present
   become: true
   become_user: "{{ wapy_user }}"
@@ -34,8 +39,8 @@
   pip:
     name: "{{ wapy_source_venv_packages }}"
     virtualenv: "{{ wapy_source_venv_root_dir }}/{{ wapy_source_venv_prefix }}-{{ python_minor }}/{{ wapy_source_venv }}"
-    virtualenv_command: "{{ wapy_source_root_dir }}/Python-{{ python_minor }}/bin/virtualenv"
-    virtualenv_python: "{{ wapy_source_root_dir }}/Python-{{ python_minor }}/bin/python{{ python_minor }}"
+    virtualenv_command: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/virtualenv"
+    virtualenv_python: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/python{{ python_minor }}"
   become: true
   become_user: "{{ wapy_user }}"
 

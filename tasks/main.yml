@@ -59,10 +59,10 @@
   set_fact:
     selinux_virtualenv_dir: "{{ wapy_source_venv_root_dir }}/{{ wapy_source_venv_prefix }}-{{
     wapy_selinux_python_minor }}"
-    selinux_virtualenv_command: "{{ wapy_source_root }}/Python-{{
+    selinux_virtualenv_command: "{{ wapy_install_root_dir }}/Python-{{
     wapy_selinux_python_minor }}/bin/virtualenv"
-    selinux_virtualenv_python: "{{ wapy_source_root }}/Python-{{
-    selinux_python_minor }}/bin/python{{ selinux_python_minor }}"
+    selinux_virtualenv_python: "{{ wapy_install_root_dir }}/Python-{{
+    wapy_selinux_python_minor }}/bin/python{{ wapy_selinux_python_minor }}"
   when: selinux_python_release is defined
 
 - name: "Register SELinux compatible system virtualenv tools"
@@ -126,9 +126,9 @@
   set_fact:
     newest_virtualenv_dir: "{{ wapy_source_venv_root_dir }}/{{ wapy_source_venv_prefix }}-{{
     newest_python_minor }}"
-    newest_virtualenv_command: "{{ wapy_source_root_dir }}/Python-{{
+    newest_virtualenv_command: "{{ wapy_install_root_dir }}/Python-{{
     newest_python_minor }}/bin/virtualenv"
-    newest_virtualenv_python: "{{ wapy_source_root_dir }}/Python-{{
+    newest_virtualenv_python: "{{ wapy_install_root_dir }}/Python-{{
     newest_python_minor }}/bin/python{{ newest_python_minor }}"
   when: newest_python_release is defined
 
