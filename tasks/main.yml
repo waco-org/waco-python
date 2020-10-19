@@ -135,10 +135,10 @@
 - name: "Register most recent system virtualenv tools"
   set_fact:
     newest_virtualenv_dir: "{{ wapy_system_venv_root_dir }}/{{ wapy_system_venv_prefix }}-{{
-    system_newest_python_minor }}"
+    wapy_system_newest_minor }}"
     newest_virtualenv_command: "/usr/bin/virtualenv{{
-    ( wapy_platform == 'Fedora' ) | ternary ('', '-' + system_newest_python_minor) }}"
-    newest_virtualenv_python: "/usr/bin/python{{ system_newest_python_minor }}"
+    ( wapy_platform == 'Fedora' ) | ternary ('', '-' + wapy_system_newest_minor) }}"
+    newest_virtualenv_python: "/usr/bin/python{{ wapy_system_newest_minor }}"
   when: newest_python_release is not defined
 
 - name: Install Sphinx in a virtualenv
