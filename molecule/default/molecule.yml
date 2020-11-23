@@ -16,7 +16,7 @@ platforms:
     image: nmusatti/centos8-pys
     pre_build_image: true
   - name: fedora
-    image: nmusatti/fedora-pys
+    image: nmusatti/fedora-pys:32
     pre_build_image: true
 provisioner:
   name: ansible
