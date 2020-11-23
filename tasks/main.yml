@@ -18,13 +18,23 @@
     name: geerlingguy.repo-epel
   when: wapy_platform != 'Fedora'
 
-- name: Install system Python
+- name: Install system Python (CentOS 8, Fedora)
+  dnf:
+    name:
+      - python2
+      - python3
+    state: present
+  become: true
+  when: wapy_platform in ( 'CentOS8', 'Fedora' )
+
+- name: Install system Python (CentOS 7)
   yum:
     name:
       - python2
       - python3
     state: present
   become: true
+  when: wapy_platform == 'CentOS7'
 
 - name: "Install system Python dependencies on CentOS 8 and Fedora"
   dnf:
