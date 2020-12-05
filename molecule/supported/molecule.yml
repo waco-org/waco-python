@@ -1,0 +1,24 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
+platforms:
+  - name: centos7
+    image: nmusatti/centos7-pys
+    pre_build_image: true
+  - name: centos8
+    image: nmusatti/centos8-pys
+    pre_build_image: true
+  - name: fedora
+    image: nmusatti/fedora-pys:32
+    pre_build_image: true
+provisioner:
+  name: ansible
+verifier:
+  name: testinfra
