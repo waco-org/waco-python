@@ -9,4 +9,3 @@
     - wapy_has_ansible: true
     - wapy_has_mercurial: true
     - wapy_has_sphinx: true
-    - pip_version: 20.3.1

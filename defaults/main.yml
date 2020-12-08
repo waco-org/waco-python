@@ -15,6 +15,8 @@ wapy_source_versions:
   # - 2.7.18
 wapy_build_root_dir: "/sw"
 wapy_install_root_dir: "/opt"
+# This shouldn't be required, but without it the bobbyrenwick.pip role isn't idempotent anymore
+wapy_pip_version: 20.3.1
 wapy_source_packages:
   - ipython
   - pip
