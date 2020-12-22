@@ -1,48 +1,126 @@
-Role Name
-=========
+waco_python
+===========
 
-A brief description of the role goes here.
+An opinionated role that allows you to complement system and/or source Python
+installations by creating custom virtualenv's or installing Ansible, Mercurial and Sphinx.
+Currently only Red Hat distributions are supported, i.e. CentOS 8, CentOS 7, Fedora 33 and
+Fedora 32. RHEL 8 and 7 are not tested, but should work without problems.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should
-be mentioned here. For instance, if the role uses the EC2 module, it may be a
-good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including
-any variables that are in defaults/main.yml, vars/main.yml, and any variables
-that can/should be set via parameters to the role. Any variables that are read
-from other roles and/or the global scope (ie. hostvars, group vars, etc.) should
-be mentioned here as well.
+The variables that control the role behaviour are listed below with their respective defaults:
+
+    wapy_has_ansible: false
+
+Whether to install Ansible. Ansible is installed in a specific virtualenv based on the most suitable
+Python version: either source version compatible with the ``python3-libselinux`` package, if its
+installation was requested, or the system's Python 3 installation.
+
+    wapy_has_mercurial: false
+
+Whether Mercurial should be installed. The latest available Python version will be used to create
+a specific virtualenv.
+
+    wapy_has_sphinx: false
+    
+Whether to install Sphinx, in a specific virtualenv based on the latest Python version available.
+
+    wapy_user: python
+    wapy_group: "{{ wapy_user }}"
+
+Owner and group of source Python installations.
+
+    wapy_source_versions: [ 3.9.0 ]
+
+The Python source releases to be installed.
+
+    wapy_build_root_dir: "/sw"
+
+The base directory of the directory where source Python releases should be downloaded and built.
+
+    wapy_install_root_dir: "/opt"
+    
+The base directory where Python releases should be installed.
+
+    wapy_source_packages
+
+A list of packages to be installed for each source Python release. See the ``defaults/main.yml``
+file for the default list.
+
+    wapy_source_venv: "dev"
+
+Name of a custom virtualenv to be created.
+
+    wapy_source_venv_root_dir: "/opt"
+
+The base directory where virtualenv's based on source Python installations should be created.
+
+    wapy_source_venv_prefix: "venv"
+
+The prefix of the name of directories where all the virtualenv's for a specific Python installation
+will be created. All virtualenv's for source Python x.y will be created in a ``venv-x.y``
+directories.
+
+    wapy_source_venv_packages:
+
+A list of packages to install in the custom virtualenv. See the ``defaults/main.yml`` file for
+the default list.
+
+    wapy_system_venv_root_dir: "/opt"
+
+The base directory where virtualenv's based on system Python installations should be created.
+
+    wapy_system_venv_prefix: "sysvenv"
+
+Directory name prefix for the directory of virtualenv's based on a specific system Python
+installation.
+
+    wapy_sphinx_venv: "doc"
+
+The name of the Sphinx virtualenv.
+
+    wapy_sphinx_packages:
+
+The packages installed in the Sphinx virtualenv. See the ``defaults/main.yml`` file for the
+default list.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in
-regards to parameters that may need to be set for other roles, or variables that
-are used from other roles.
+The ``nmusatti.source_python`` role is used to install Python from source.
+
+The ``geerlingguy.repo-epel`` role is used to enable the EPEL repository on CentOS.
+
+The ``bobbyrenwick.pip`` role is used to install pip.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
+While it is certainly possible to use this role by itself, it is meant to be used in conjunction
+with the [waco-master](https://github.com/waco-org/waco-master) role.
 
     - hosts: servers
       roles:
-         - { role: waco-python, x: 42 }
+         - role: nmusatti.source_python
+           vars:
+             wapy_source_versions:
+               - 3.9.0
+             wapy_has_sphinx: true
 
 License
 -------
 
-BSD
+GPLv3
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a
-website (HTML is not allowed).
+Nicola Musatti - <https://github.com/nmusatti>
+
+WACO - Workstation as Code - <https://github.com/waco-org>
