@@ -1,9 +1,9 @@
 waco_python
 ===========
 
-An opinionated role that allows you to complement system and/or source Python
-installations by creating custom virtualenv's or installing Ansible, Mercurial and Sphinx.
-Currently only Red Hat distributions are supported, i.e. CentOS 8, CentOS 7, Fedora 33 and
+An opinionated Ansible role that allows you to perform system and/or source Python installations and
+to complement them by creating custom virtualenv's and installing Ansible, Mercurial or Sphinx.
+Currently only Red Hat open distributions are supported, i.e. CentOS 8, CentOS 7, Fedora 33 and
 Fedora 32. RHEL 8 and 7 are not tested, but should work without problems.
 
 Requirements
@@ -107,7 +107,7 @@ with the [waco-master](https://github.com/waco-org/waco-master) role.
 
     - hosts: servers
       roles:
-         - role: nmusatti.source_python
+         - role: nmusatti.waco_python
            vars:
              wapy_source_versions:
                - 3.9.0
