@@ -113,6 +113,9 @@ with the [waco-master](https://github.com/waco-org/waco-master) role.
                - 3.9.0
              wapy_has_sphinx: true
 
+> Note: Currently I cannot upload this role to Ansible Galaxy, so you need to download it from
+> GitHub.
+
 License
 -------
 
