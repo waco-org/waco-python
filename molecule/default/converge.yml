@@ -5,7 +5,7 @@
     - role: waco-python
   vars:
     - wapy_source_versions:
-        - 3.8.6
+        - 3.9.0
     - wapy_has_ansible: true
     - wapy_has_mercurial: true
     - wapy_has_sphinx: true
