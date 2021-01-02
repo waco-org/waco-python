@@ -39,6 +39,16 @@ wapy_source_venv_packages:
   - wheel
 wapy_system_venv_root_dir: "/opt"
 wapy_system_venv_prefix: "sysvenv"
+wapy_ansible_venv: "ansible"
+wapy_ansible_packages:
+  - ansible
+  - ansible-lint
+  - flake8
+  - molecule[docker]
+  - pytest
+  - selinux
+  - pytest-testinfra
+  - yamllint
 wapy_sphinx_venv: "doc"
 wapy_sphinx_packages:
   - hieroglyph
