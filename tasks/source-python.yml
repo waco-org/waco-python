@@ -15,9 +15,9 @@
   include_role:
     name: bobbyrenwick.pip
   vars:
-    - python: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/python{{ python_minor }}"
-    - pip: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/pip{{ python_minor }}"
-    - pip_version: "{{ wapy_pip_version }}"
+    python: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/python{{ python_minor }}"
+    pip: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/pip{{ python_minor }}"
+    pip_version: "{{ wapy_pip_version | default('') }}"
 
 - name: "Install standard packages on Python {{ python_release }}"
   pip:
