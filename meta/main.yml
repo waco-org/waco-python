@@ -3,6 +3,8 @@
 # Copyright Nicola Musatti 2020.
 
 galaxy_info:
+  role_name: waco_python
+  namespace: waco
   author: Nicola Musatti
   description: Waco Python role
   company: The Waco project
