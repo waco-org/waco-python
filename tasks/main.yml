@@ -102,7 +102,19 @@
   become: true
   when: ( wapy_has_ansible or wapy_has_mercurial or wapy_has_sphinx ) and selinux_python_release is not defined
 
-- name: Install Ansible and Molecule in a virtualenv
+- name: Install Ansible and Molecule in a virtualenv (CentOS 7)
+  pip:
+    name: "{{ wapy_ansible_packages }}"
+    virtualenv: "{{ selinux_virtualenv_dir }}/{{ wapy_ansible_venv }}"
+    virtualenv_command: "{{ selinux_virtualenv_command }}"
+    virtualenv_python: "{{ selinux_virtualenv_python }}"
+  environment:
+    LC_ALL: "en_US.UTF-8"
+  become: true
+  become_user: "{{ wapy_user }}"
+  when: wapy_has_ansible and wapy_platform == 'CentOS7'
+
+- name: Install Ansible and Molecule in a virtualenv (CentOS 8, Fedora)
   pip:
     name: "{{ wapy_ansible_packages }}"
     virtualenv: "{{ selinux_virtualenv_dir }}/{{ wapy_ansible_venv }}"
@@ -110,7 +122,7 @@
     virtualenv_python: "{{ selinux_virtualenv_python }}"
   become: true
   become_user: "{{ wapy_user }}"
-  when: wapy_has_ansible
+  when: wapy_has_ansible and wapy_platform != 'CentOS7'
 
 - name: Install Mercurial in virtualenv
   pip:
