@@ -1,6 +1,8 @@
 waco_python
 ===========
 
+![test](https://github.com/waco/waco-python/actions/workflows/test.yml/badge.svg)
+
 An opinionated Ansible role that allows you to perform system and/or source Python installations and
 to complement them by creating custom virtualenv's and installing Ansible, Mercurial or Sphinx.
 Currently only Red Hat open distributions are supported, i.e. CentOS 8, CentOS 7, Fedora 35 and
