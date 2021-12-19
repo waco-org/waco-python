@@ -11,8 +11,6 @@ lint: |
 platforms:
   - name: $TOX_ENVNAME
     image: nmusatti/${TOX_ENVNAME}-pys
-
-    command: /sbin/init
     pre_build_image: true
 provisioner:
   name: ansible
