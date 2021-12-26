@@ -1,0 +1,20 @@
+- name: Install Ansible and Molecule in a virtualenv
+  pip:
+    name: "{{ wapy_ansible_packages }}"
+    virtualenv: "{{ newest_virtualenv_dir }}/{{ wapy_ansible_venv }}"
+    virtualenv_command: "{{ newest_virtualenv_command }}"
+    virtualenv_python: "{{ newest_virtualenv_python }}"
+  become: true
+  become_user: "{{ wapy_user }}"
+  when: wapy_has_ansible
+
+- name: Install Mercurial in a virtualenv
+  pip:
+    name:
+      - mercurial
+    virtualenv: "{{ newest_virtualenv_dir }}/hg"
+    virtualenv_command: "{{ newest_virtualenv_command }}"
+    virtualenv_python: "{{ newest_virtualenv_python }}"
+  become: true
+  become_user: "{{ wapy_user }}"
+  when: wapy_has_mercurial

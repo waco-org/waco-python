@@ -1,6 +1,6 @@
 ---
 # Workstation as Code
-# Copyright Nicola Musatti 2020.
+# Copyright Nicola Musatti 2020 - 2021.
 
 - name: Create the Python installation group
   group:
@@ -16,39 +16,55 @@
 - name: Enable the EPEL repository
   include_role:
     name: geerlingguy.repo-epel
-  when: wapy_platform != 'Fedora'
+  when: wapy_platform in ( 'EL7', 'EL8' )
 
-- name: Install system Python (CentOS 8, Fedora)
+- name: Install system Python (EL 8, Fedora)
   dnf:
     name:
       - python2
       - python3
     state: present
   become: true
-  when: wapy_platform in ( 'CentOS8', 'Fedora' )
+  when: wapy_platform in ( 'EL8', 'Fedora' )
 
-- name: Install system Python (CentOS 7)
+- name: Install system Python (EL 7)
   yum:
     name:
       - python2
       - python3
     state: present
   become: true
-  when: wapy_platform == 'CentOS7'
+  when: wapy_platform == 'EL7'
 
-- name: "Install system Python dependencies on CentOS 8 and Fedora"
+- name: Install system Python (Ubuntu)
+  apt:
+    name:
+      - "{{ ( ansible_distribution_version == '18.04' ) | ternary('python', 'python2') }}"
+      - python3
+    state: present
+  become: true
+  when: wapy_platform == 'Ubuntu'
+
+- name: "Install system Python dependencies (EL 8, Fedora)"
   dnf:
     name: "{{ wapy_system_python_deps }}"
     state: present
   become: true
-  when: wapy_platform in ( 'CentOS8', 'Fedora' )
+  when: wapy_platform in ( 'EL8', 'Fedora' )
 
-- name: "Install system Python dependencies on CentOS 7"
+- name: "Install system Python dependencies (EL 7)"
   yum:
     name: "{{ wapy_system_python_deps }}"
     state: present
   become: true
-  when: wapy_platform == 'CentOS7'
+  when: wapy_platform == 'EL7'
+
+- name: "Install system Python dependencies (Ubuntu)"
+  apt:
+    name: "{{ wapy_system_python_deps }}"
+    state: present
+  become: true
+  when: wapy_platform == 'Ubuntu'
 
 - name: "Create root directory for default virtualenv's"
   file:
@@ -64,77 +80,6 @@
     python_minor: "{{ python_release.split('.')[0] }}.{{ python_release.split('.')[1] }}"
     python_path: "{{ wapy_source_python_root }}/Python-{{ python_minor }}/bin"
   loop: "{{ wapy_source_versions }}"
-
-- name: "Register SELinux compatible source virtualenv tools"
-  set_fact:
-    selinux_virtualenv_dir: "{{ wapy_source_venv_root_dir }}/{{ wapy_source_venv_prefix }}-{{
-    wapy_selinux_python_minor }}"
-    selinux_virtualenv_command: "{{ wapy_install_root_dir }}/Python-{{
-    wapy_selinux_python_minor }}/bin/virtualenv"
-    selinux_virtualenv_python: "{{ wapy_install_root_dir }}/Python-{{
-    wapy_selinux_python_minor }}/bin/python{{ wapy_selinux_python_minor }}"
-  when: selinux_python_release is defined
-
-- name: "Register SELinux compatible system virtualenv tools"
-  set_fact:
-    selinux_virtualenv_dir: "{{ wapy_system_venv_root_dir }}/{{ wapy_system_venv_prefix }}-{{
-    wapy_selinux_python_minor }}"
-    selinux_virtualenv_command: "/usr/bin/virtualenv{{
-    ( wapy_platform == 'Fedora' ) | ternary ('', '-' + wapy_selinux_python_minor) }}"
-    selinux_virtualenv_python: "/usr/bin/python{{ wapy_selinux_python_minor }}"
-  when: selinux_python_release is not defined
-
-- name: "Create root directory for system virtualenv's"
-  file:
-    dest: "{{ wapy_system_venv_root_dir }}"
-    state: directory
-    mode: 0755
-  become: true
-  when: ( wapy_has_ansible or wapy_has_mercurial or wapy_has_sphinx ) and selinux_python_release is not defined
-
-- name: "Create base directory for system virtualenv's"
-  file:
-    dest: "{{ selinux_virtualenv_dir }}"
-    state: directory
-    mode: 0755
-    group: "{{ wapy_group }}"
-    owner: "{{ wapy_user }}"
-  become: true
-  when: ( wapy_has_ansible or wapy_has_mercurial or wapy_has_sphinx ) and selinux_python_release is not defined
-
-- name: Install Ansible and Molecule in a virtualenv (CentOS 7)
-  pip:
-    name: "{{ wapy_ansible_packages }}"
-    virtualenv: "{{ selinux_virtualenv_dir }}/{{ wapy_ansible_venv }}"
-    virtualenv_command: "{{ selinux_virtualenv_command }}"
-    virtualenv_python: "{{ selinux_virtualenv_python }}"
-  environment:
-    LC_ALL: "en_US.UTF-8"
-  become: true
-  become_user: "{{ wapy_user }}"
-  when: wapy_has_ansible and wapy_platform == 'CentOS7'
-
-- name: Install Ansible and Molecule in a virtualenv (CentOS 8, Fedora)
-  pip:
-    name: "{{ wapy_ansible_packages }}"
-    virtualenv: "{{ selinux_virtualenv_dir }}/{{ wapy_ansible_venv }}"
-    virtualenv_command: "{{ selinux_virtualenv_command }}"
-    virtualenv_python: "{{ selinux_virtualenv_python }}"
-  become: true
-  become_user: "{{ wapy_user }}"
-  when: wapy_has_ansible and wapy_platform != 'CentOS7'
-
-- name: Install Mercurial in virtualenv
-  pip:
-    name:
-      - mercurial
-      - selinux
-    virtualenv: "{{ selinux_virtualenv_dir }}/hg"
-    virtualenv_command: "{{ selinux_virtualenv_command }}"
-    virtualenv_python: "{{ selinux_virtualenv_python }}"
-  become: true
-  become_user: "{{ wapy_user }}"
-  when: wapy_has_mercurial
 
 - name: "Register most recent source virtualenv tools"
   set_fact:
@@ -154,6 +99,14 @@
     ( wapy_platform == 'Fedora' ) | ternary ('', '-' + wapy_system_newest_minor) }}"
     newest_virtualenv_python: "/usr/bin/python{{ wapy_system_newest_minor }}"
   when: newest_python_release is not defined
+
+- name: Install Ansible and Mercurial (RedHat)
+  include_tasks: "redhat/ansible_mercurial.yml"
+  when: ansible_os_family == "RedHat" and ( wapy_has_ansible or wapy_has_mercurial )
+
+- name: Install Ansible and Mercurial (Ubuntu)
+  include_tasks: "ubuntu/ansible_mercurial.yml"
+  when: ansible_distribution == "Ubuntu" and ( wapy_has_ansible or wapy_has_mercurial )
 
 - name: Install Sphinx in a virtualenv
   pip:
