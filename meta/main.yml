@@ -22,6 +22,10 @@ galaxy_info:
       versions:
         - 35
         - 34
+    - name: Ubuntu
+      versions:
+        - focal
+        - bionic
 
   galaxy_tags: []
 

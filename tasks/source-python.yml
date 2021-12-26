@@ -48,7 +48,7 @@
 - name: "Register SELinux compatible release"
   set_fact:
     selinux_python_release: "{{ python_release }}"
-  when: wapy_selinux_python_minor == python_minor
+  when: ansible_os_family == "RedHat" and wapy_selinux_python_minor == python_minor
 
 - name: "Register the most recent source release"
   set_fact:

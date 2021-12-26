@@ -2,10 +2,10 @@
 # Workstation as Code
 # Copyright Nicola Musatti 2020 - 2021.
 
-wapy_platform: "{{ ansible_distribution }}{{ 
-( ansible_distribution == 'CentOS' ) | ternary(ansible_distribution_major_version, '') }}"
+wapy_platform: "{{ ( ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora' ) |
+ternary('EL' + ansible_distribution_major_version, ansible_distribution) }}"
 wapy_platform_dependencies:
-  CentOS8:
+  EL8:
     - libjpeg-turbo-devel
     - libxml2-devel
     - libxslt-devel
@@ -16,7 +16,7 @@ wapy_platform_dependencies:
     - python3-pip
     - python3-setuptools
     - python3-virtualenv
-  CentOS7:
+  EL7:
     - libjpeg-turbo-devel
     - libselinux-python
     - libselinux-python3
@@ -36,14 +36,24 @@ wapy_platform_dependencies:
     - python3-pip
     - python3-setuptools
     - python3-virtualenv
+  Ubuntu:
+    - libjpeg-turbo8-dev
+    - libxml2-dev
+    - libxslt1-dev
+    - python-setuptools
+    - python3-setuptools
+    - python3-virtualenv
+    - python3-pip
 wapy_system_python_deps: "{{ wapy_platform_dependencies[wapy_platform] }}"
 wapy_selinux_python_minors:
-  CentOS8: "3.6"
-  CentOS7: "3.6"
+  EL8: "3.6"
+  EL7: "3.6"
   Fedora: "{{ ( ansible_distribution_major_version == '35' ) | ternary('3.10', '3.9') }}"
+  Ubuntu: ""
 wapy_selinux_python_minor: "{{ wapy_selinux_python_minors[wapy_platform] }}"
 wapy_system_newest_minors:
-  CentOS8: "3.6"
-  CentOS7: "3.6"
+  EL8: "3.6"
+  EL7: "3.6"
   Fedora: "{{ ( ansible_distribution_major_version == '35' ) | ternary('3.10', '3.9') }}"
+  Ubuntu: "3.8"
 wapy_system_newest_minor: "{{ wapy_system_newest_minors[wapy_platform] }}"
