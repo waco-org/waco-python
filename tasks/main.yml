@@ -39,7 +39,7 @@
 - name: Install system Python (Ubuntu)
   apt:
     name:
-      - python2
+      - "{{ ( ansible_distribution_version == '18.04' ) | ternary('python', 'python2') }}"
       - python3
     state: present
   become: true
