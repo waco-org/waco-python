@@ -2,7 +2,7 @@
 - name: Converge
   hosts: all
   roles:
-    - role: waco.waco_python
+    - role: waco_org.waco_python
   vars:
     - wapy_source_versions:
         - 2.7.18
