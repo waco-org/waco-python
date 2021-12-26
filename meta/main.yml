@@ -4,7 +4,7 @@
 
 galaxy_info:
   role_name: waco_python
-  namespace: waco
+  namespace: waco_org
   author: Nicola Musatti
   description: Waco Python role
   company: The Waco project

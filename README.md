@@ -111,7 +111,7 @@ with the [waco-master](https://github.com/waco-org/waco-master) role.
 
     - hosts: servers
       roles:
-         - role: nmusatti.waco_python
+         - role: waco_org.waco_python
            vars:
              wapy_source_versions:
                - 3.10.1
