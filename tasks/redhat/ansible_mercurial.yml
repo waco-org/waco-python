@@ -57,7 +57,7 @@
   become_user: "{{ wapy_user }}"
   when: wapy_has_ansible and wapy_platform != 'EL7'
 
-- name: Install Mercurial in virtualenv
+- name: Install Mercurial in a virtualenv
   pip:
     name:
       - mercurial

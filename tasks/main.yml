@@ -104,7 +104,7 @@
   include_tasks: "redhat/ansible_mercurial.yml"
   when: ansible_os_family == "RedHat" and ( wapy_has_ansible or wapy_has_mercurial )
 
-- name: Install Ansible and Mercurial CE (Ubuntu)
+- name: Install Ansible and Mercurial (Ubuntu)
   include_tasks: "ubuntu/ansible_mercurial.yml"
   when: ansible_distribution == "Ubuntu" and ( wapy_has_ansible or wapy_has_mercurial )
 

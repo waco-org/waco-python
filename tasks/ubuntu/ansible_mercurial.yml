@@ -8,7 +8,7 @@
   become_user: "{{ wapy_user }}"
   when: wapy_has_ansible
 
-- name: Install Mercurial in virtualenv
+- name: Install Mercurial in a virtualenv
   pip:
     name:
       - mercurial
