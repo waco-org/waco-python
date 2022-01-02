@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         platform:
-          - centos8
+          - rockylinux8
           - centos7
           - fedora35
           - fedora34
