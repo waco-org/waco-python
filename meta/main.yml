@@ -1,6 +1,6 @@
 ---
 # Workstation as Code
-# Copyright Nicola Musatti 2020 - 2021.
+# Copyright Nicola Musatti 2020 - 2022.
 
 galaxy_info:
   role_name: waco_python
@@ -11,7 +11,7 @@ galaxy_info:
 
   license: GPLv3
 
-  min_ansible_version: 2.9
+  min_ansible_version: 2.10
 
   platforms:
     - name: EL
