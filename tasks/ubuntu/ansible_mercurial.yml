@@ -1,3 +1,21 @@
+- name: "Create root directory for system virtualenv's"
+  file:
+    dest: "{{ wapy_system_venv_root_dir }}"
+    state: directory
+    mode: 0755
+  become: true
+  when: ( wapy_has_ansible or wapy_has_mercurial ) and ( wapy_source_versions | length ) == 0
+
+- name: "Create base directory for system virtualenv's"
+  file:
+    dest: "{{ newest_virtualenv_dir }}"
+    state: directory
+    mode: 0755
+    group: "{{ wapy_group }}"
+    owner: "{{ wapy_user }}"
+  become: true
+  when: ( wapy_has_ansible or wapy_has_mercurial ) and ( wapy_source_versions | length ) == 0
+
 - name: Install Ansible and Molecule in a virtualenv
   pip:
     name: "{{ wapy_ansible_packages }}"
