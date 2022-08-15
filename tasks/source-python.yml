@@ -1,9 +1,9 @@
 ---
 # Workstation as Code
-# Copyright Nicola Musatti 2020.
+# Copyright Nicola Musatti 2022.
 
 - name: "Install Python {{ python_release }} from source"
-  include_role:
+  ansible.builtin.include_role:
     name: nmusatti.source_python
   vars:
     python_group: "{{ wapy_group }}"
@@ -12,7 +12,7 @@
     python_install_dir: "{{ wapy_install_root_dir }}"
 
 - name: "Install pip for Python {{ python_release }}"
-  include_role:
+  ansible.builtin.include_role:
     name: bobbyrenwick.pip
   vars:
     python: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/python{{ python_minor }}"
@@ -20,7 +20,7 @@
     pip_version: "{{ wapy_pip_version | default('') }}"
 
 - name: "Install standard packages on Python {{ python_release }}"
-  pip:
+  ansible.builtin.pip:
     name: "{{ wapy_source_packages }}"
     executable: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/pip{{ python_minor }}"
     state: present
@@ -28,7 +28,7 @@
   become_user: "{{ wapy_user }}"
 
 - name: "Create base virtualenv directory for Python {{ python_release }}"
-  file:
+  ansible.builtin.file:
     dest: "{{ wapy_source_venv_root_dir }}/{{ wapy_source_venv_prefix }}-{{ python_minor }}"
     state: directory
     mode: 0755
@@ -37,7 +37,7 @@
   become: true
 
 - name: "Install the default virtualenv for Python {{ python_release }}"
-  pip:
+  ansible.builtin.pip:
     name: "{{ wapy_source_venv_packages }}"
     virtualenv: "{{ wapy_source_venv_root_dir }}/{{ wapy_source_venv_prefix }}-{{ python_minor }}/{{ wapy_source_venv }}"
     virtualenv_command: "{{ wapy_install_root_dir }}/Python-{{ python_minor }}/bin/virtualenv"
@@ -46,12 +46,12 @@
   become_user: "{{ wapy_user }}"
 
 - name: "Register SELinux compatible release"
-  set_fact:
+  ansible.builtin.set_fact:
     selinux_python_release: "{{ python_release }}"
   when: ansible_os_family == "RedHat" and wapy_selinux_python_minor == python_minor
 
 - name: "Register the most recent source release"
-  set_fact:
+  ansible.builtin.set_fact:
     newest_python_release: "{{ python_release }}"
     newest_python_minor: "{{ python_release.split('.')[0] }}.{{ python_release.split('.')[1] }}"
   when: >

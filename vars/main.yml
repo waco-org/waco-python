@@ -1,10 +1,18 @@
 ---
 # Workstation as Code
-# Copyright Nicola Musatti 2020 - 2021.
+# Copyright Nicola Musatti 2020 - 2022.
 
 wapy_platform: "{{ ( ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora' ) |
 ternary('EL' + ansible_distribution_major_version, ansible_distribution) }}"
 wapy_platform_dependencies:
+  EL9:
+    - libjpeg-turbo-devel
+    - libxml2-devel
+    - libxslt-devel
+    - python3-libselinux
+    - python3-pip
+    - python3-setuptools
+    # - python3-virtualenv
   EL8:
     - libjpeg-turbo-devel
     - libxml2-devel
@@ -46,14 +54,16 @@ wapy_platform_dependencies:
     - python3-pip
 wapy_system_python_deps: "{{ wapy_platform_dependencies[wapy_platform] }}"
 wapy_selinux_python_minors:
+  EL9: "3.9"
   EL8: "3.6"
   EL7: "3.6"
-  Fedora: "{{ ( ansible_distribution_major_version == '35' ) | ternary('3.10', '3.9') }}"
+  Fedora: "3.10"
   Ubuntu: ""
 wapy_selinux_python_minor: "{{ wapy_selinux_python_minors[wapy_platform] }}"
 wapy_system_newest_minors:
+  EL9: "3.9"
   EL8: "3.6"
   EL7: "3.6"
-  Fedora: "{{ ( ansible_distribution_major_version == '35' ) | ternary('3.10', '3.9') }}"
-  Ubuntu: "3.8"
+  Fedora: "3.10"
+  Ubuntu: "{{ ( ansible_distribution_major_version == 'jammy' ) | ternary('3.10', '3.8') }}"
 wapy_system_newest_minor: "{{ wapy_system_newest_minors[wapy_platform] }}"

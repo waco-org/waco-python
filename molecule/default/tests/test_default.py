@@ -20,7 +20,8 @@ def test_python3(host):
 
 
 def test_python2(host):
-    assert '2' in host.check_output('/usr/bin/python2 --version 2>&1')
+    if host.file('/usr/bin/python2').exists:
+        assert '2' in host.check_output('/usr/bin/python2 --version 2>&1')
 
 
 def test_source_python(host):
