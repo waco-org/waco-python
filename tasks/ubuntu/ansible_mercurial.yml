@@ -1,5 +1,5 @@
 - name: "Create root directory for system virtualenv's"
-  file:
+  ansible.builtin.file:
     dest: "{{ wapy_system_venv_root_dir }}"
     state: directory
     mode: 0755
@@ -7,7 +7,7 @@
   when: ( wapy_has_ansible or wapy_has_mercurial ) and ( wapy_source_versions | length ) == 0
 
 - name: "Create base directory for system virtualenv's"
-  file:
+  ansible.builtin.file:
     dest: "{{ newest_virtualenv_dir }}"
     state: directory
     mode: 0755
@@ -17,7 +17,7 @@
   when: ( wapy_has_ansible or wapy_has_mercurial ) and ( wapy_source_versions | length ) == 0
 
 - name: Install Ansible and Molecule in a virtualenv
-  pip:
+  ansible.builtin.pip:
     name: "{{ wapy_ansible_packages }}"
     virtualenv: "{{ newest_virtualenv_dir }}/{{ wapy_ansible_venv }}"
     virtualenv_command: "{{ newest_virtualenv_command }}"
@@ -27,7 +27,7 @@
   when: wapy_has_ansible
 
 - name: Install Mercurial in a virtualenv
-  pip:
+  ansible.builtin.pip:
     name:
       - mercurial
     virtualenv: "{{ newest_virtualenv_dir }}/hg"
