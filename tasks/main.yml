@@ -82,7 +82,8 @@
   become: true
 
 - name: Install source Python
-  ansible.builtin.include_tasks: source-python.yml
+  ansible.builtin.include_tasks:
+    file: source-python.yml
   vars:
     python_release: "{{ item }}"
     python_minor: "{{ python_release.split('.')[0] }}.{{ python_release.split('.')[1] }}"
@@ -109,11 +110,13 @@
   when: newest_python_release is not defined
 
 - name: Install Ansible and Mercurial (RedHat)
-  ansible.builtin.include_tasks: "redhat/ansible_mercurial.yml"
+  ansible.builtin.include_tasks:
+    file: "redhat/ansible_mercurial.yml"
   when: ansible_os_family == "RedHat" and ( wapy_has_ansible or wapy_has_mercurial )
 
 - name: Install Ansible and Mercurial (Ubuntu)
-  ansible.builtin.include_tasks: "ubuntu/ansible_mercurial.yml"
+  ansible.builtin.include_tasks:
+    file: "ubuntu/ansible_mercurial.yml"
   when: ansible_distribution == "Ubuntu" and ( wapy_has_ansible or wapy_has_mercurial )
 
 - name: Install Sphinx in a virtualenv
