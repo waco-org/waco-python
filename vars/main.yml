@@ -2,7 +2,7 @@
 # Workstation as Code
 # Copyright Nicola Musatti 2020 - 2022.
 
-wapy_platform: "{{ ( ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora' ) |
+wapy_platform: "{{ (ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora') |
 ternary('EL' + ansible_distribution_major_version, ansible_distribution) }}"
 wapy_platform_dependencies:
   EL9:
@@ -65,5 +65,5 @@ wapy_system_newest_minors:
   EL8: "3.6"
   EL7: "3.6"
   Fedora: "3.10"
-  Ubuntu: "{{ ( ansible_distribution_major_version == 'jammy' ) | ternary('3.10', '3.8') }}"
+  Ubuntu: "{{ (ansible_distribution_major_version == 'jammy') | ternary('3.10', '3.8') }}"
 wapy_system_newest_minor: "{{ wapy_system_newest_minors[wapy_platform] }}"

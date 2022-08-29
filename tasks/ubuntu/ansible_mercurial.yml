@@ -4,7 +4,7 @@
     state: directory
     mode: 0755
   become: true
-  when: ( wapy_has_ansible or wapy_has_mercurial ) and ( wapy_source_versions | length ) == 0
+  when: (wapy_has_ansible or wapy_has_mercurial) and (wapy_source_versions | length) == 0
 
 - name: "Create base directory for system virtualenv's"
   ansible.builtin.file:
@@ -14,7 +14,7 @@
     group: "{{ wapy_group }}"
     owner: "{{ wapy_user }}"
   become: true
-  when: ( wapy_has_ansible or wapy_has_mercurial ) and ( wapy_source_versions | length ) == 0
+  when: (wapy_has_ansible or wapy_has_mercurial) and (wapy_source_versions | length) == 0
 
 - name: Install Ansible and Molecule in a virtualenv
   ansible.builtin.pip:

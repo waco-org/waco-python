@@ -56,6 +56,5 @@
     newest_python_minor: "{{ python_release.split('.')[0] }}.{{ python_release.split('.')[1] }}"
   when: >
     newest_python_release is not defined or
-    newest_python_release.split('.')[0] < python_release.split('.')[0] or (
-    newest_python_release.split('.')[0] == python_release.split('.')[0] and
-    newest_python_release.split('.')[1] < python_release.split('.')[1] )
+    newest_python_release.split('.')[0] < python_release.split('.')[0] or (newest_python_release.split('.')[0]
+    == python_release.split('.')[0] and newest_python_release.split('.')[1] < python_release.split('.')[1])

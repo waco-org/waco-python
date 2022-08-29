@@ -13,7 +13,7 @@
     selinux_virtualenv_dir: "{{ wapy_system_venv_root_dir }}/{{ wapy_system_venv_prefix }}-{{
     wapy_selinux_python_minor }}"
     selinux_virtualenv_command: "/usr/bin/virtualenv{{
-    ( wapy_platform == 'Fedora' ) | ternary ('', '-' + wapy_selinux_python_minor) }}"
+    (wapy_platform == 'Fedora') | ternary ('', '-' + wapy_selinux_python_minor) }}"
     selinux_virtualenv_python: "/usr/bin/python{{ wapy_selinux_python_minor }}"
   when: selinux_python_release is not defined
 
@@ -23,7 +23,7 @@
     state: directory
     mode: 0755
   become: true
-  when: ( wapy_has_ansible or wapy_has_mercurial or wapy_has_sphinx ) and selinux_python_release is not defined
+  when: (wapy_has_ansible or wapy_has_mercurial or wapy_has_sphinx) and selinux_python_release is not defined
 
 - name: "Create base directory for system virtualenv's"
   ansible.builtin.file:
@@ -33,7 +33,7 @@
     group: "{{ wapy_group }}"
     owner: "{{ wapy_user }}"
   become: true
-  when: ( wapy_has_ansible or wapy_has_mercurial or wapy_has_sphinx ) and selinux_python_release is not defined
+  when: (wapy_has_ansible or wapy_has_mercurial or wapy_has_sphinx) and selinux_python_release is not defined
 
 - name: Install Ansible and Molecule in a virtualenv (EL 7)
   ansible.builtin.pip:
