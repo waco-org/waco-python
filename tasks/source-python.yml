@@ -1,8 +1,8 @@
 ---
 # Workstation as Code
-# Copyright Nicola Musatti 2022.
+# Copyright Nicola Musatti 2022 - 2023.
 
-- name: "Install Python {{ python_release }} from source"
+- name: "Install source Python {{ python_release }}"
   ansible.builtin.include_role:
     name: nmusatti.source_python
   vars:

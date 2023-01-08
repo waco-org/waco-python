@@ -1,6 +1,6 @@
 ---
 # Workstation as Code
-# Copyright Nicola Musatti 2020 - 2022.
+# Copyright Nicola Musatti 2020 - 2023.
 
 - name: Create the Python installation group
   ansible.builtin.group:
@@ -105,7 +105,7 @@
     newest_virtualenv_dir: "{{ wapy_system_venv_root_dir }}/{{ wapy_system_venv_prefix }}-{{
     wapy_system_newest_minor }}"
     newest_virtualenv_command: "/usr/bin/virtualenv{{
-    (wapy_platform != 'EL') | ternary ('', '-' + wapy_system_newest_minor) }}"
+    (wapy_platform != 'EL') | ternary('', '-' + wapy_system_newest_minor) }}"
     newest_virtualenv_python: "/usr/bin/python{{ wapy_system_newest_minor }}"
   when: newest_python_release is not defined
 
