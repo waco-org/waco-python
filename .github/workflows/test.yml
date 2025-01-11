@@ -18,7 +18,7 @@ jobs:
           - centos-stream9
           - fedora41
           - fedora40
-		  - fedora39
+          - fedora39
           - ubuntu2404
           - ubuntu2204
           - ubuntu2004
