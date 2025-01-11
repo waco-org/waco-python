@@ -14,14 +14,14 @@ jobs:
         platform:
           - rockylinux9
           - rockylinux8
-          # - centos-stream9
-          - centos-stream8
-          - centos7
-          - fedora36
-          - fedora35
+          - centos-stream10
+          - centos-stream9
+          - fedora41
+          - fedora40
+		  - fedora39
+          - ubuntu2404
           - ubuntu2204
           - ubuntu2004
-          - ubuntu1804
 
     steps:
       - uses: actions/checkout@v2
