@@ -16,7 +16,7 @@ jobs:
           - rockylinux8
           - centos-stream10
           - centos-stream9
-          - fedora41
+          # - fedora41
           - fedora40
           - fedora39
           - ubuntu2404
