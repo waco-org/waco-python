@@ -1,10 +1,18 @@
 ---
 # Workstation as Code
-# Copyright Nicola Musatti 2020 - 2022.
+# Copyright Nicola Musatti 2020 - 2025.
 
 wapy_platform: "{{ (ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora') |
 ternary('EL' + ansible_distribution_major_version, ansible_distribution) }}"
 wapy_platform_dependencies:
+  EL10:
+    - libjpeg-turbo-devel
+    - libxml2-devel
+    - libxslt-devel
+    - python3-libselinux
+    - python3-pip
+    - python3-setuptools
+    - python3-virtualenv
   EL9:
     - libjpeg-turbo-devel
     - libxml2-devel
@@ -12,7 +20,7 @@ wapy_platform_dependencies:
     - python3-libselinux
     - python3-pip
     - python3-setuptools
-    # - python3-virtualenv
+    - python3-virtualenv
   EL8:
     - libjpeg-turbo-devel
     - libxml2-devel
@@ -24,18 +32,6 @@ wapy_platform_dependencies:
     - python3-pip
     - python3-setuptools
     - python3-virtualenv
-  EL7:
-    - libjpeg-turbo-devel
-    - libselinux-python
-    - libselinux-python3
-    - libxml2-devel
-    - libxslt-devel
-    - python-setuptools
-    - python-virtualenv
-    - python2-pip
-    - python3-pip
-    - python36-setuptools
-    - python36-virtualenv
   Fedora:
     - libjpeg-turbo-devel
     - libxml2-devel
@@ -48,22 +44,25 @@ wapy_platform_dependencies:
     - libjpeg-turbo8-dev
     - libxml2-dev
     - libxslt1-dev
-    - python-setuptools
     - python3-setuptools
     - python3-virtualenv
     - python3-pip
 wapy_system_python_deps: "{{ wapy_platform_dependencies[wapy_platform] }}"
 wapy_selinux_python_minors:
+  EL10: "3.12"
   EL9: "3.9"
   EL8: "3.6"
-  EL7: "3.6"
-  Fedora: "{{ (ansible_distribution_major_version == '37') | ternary('3.11', '3.10') }}"
+  Fedora: "{{ (ansible_distribution_major_version == '41') | ternary('3.13', '3.12') }}"
   Ubuntu: ""
 wapy_selinux_python_minor: "{{ wapy_selinux_python_minors[wapy_platform] }}"
+wapy_ubuntu_newest_minors:
+  noble: "3.12"
+  jammy: "3.10"
+  focal: "3.8"
 wapy_system_newest_minors:
+  EL10: "3.12"
   EL9: "3.9"
   EL8: "3.6"
-  EL7: "3.6"
-  Fedora: "{{ (ansible_distribution_major_version == '37') | ternary('3.11', '3.10') }}"
-  Ubuntu: "{{ (ansible_distribution_major_version == 'jammy') | ternary('3.10', '3.8') }}"
+  Fedora: "{{ (ansible_distribution_major_version == '41') | ternary('3.13', '3.12') }}"
+  Ubuntu: "{{ wapy_ubuntu_newest_minors[ansible_distribution_major_version] }}"
 wapy_system_newest_minor: "{{ wapy_system_newest_minors[wapy_platform] }}"

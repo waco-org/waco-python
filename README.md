@@ -6,8 +6,8 @@ waco_python
 An opinionated Ansible role that allows you to perform system and/or source Python installations and
 to complement them by creating custom virtualenv's and installing Ansible, Mercurial or Sphinx.
 Supported distributions are the currently maintained releases of the Red Hat family and
-derivatives, and of the Ubuntu LTS variants. At this time tests are run on Rocky Linux 8, CentOS 7,
-Fedora 35, Fedora 34, Ubuntu 20.04 and Ubuntu 18.04.
+derivatives, and of the Ubuntu LTS variants. At this time tests are run on Rocky Linux 9, CentOS Stream 10, 
+CentOS Stream 9, Fedora 41, Fedora 40, Fedora 39, Ubuntu 24.04, Ubuntu 22.04 and Ubuntu 20.04.
 
 
 Requirements
@@ -40,7 +40,7 @@ Whether to install Sphinx, in a specific virtualenv based on the latest Python v
 
 Owner and group of source Python installations.
 
-    wapy_source_versions: [ 3.10.1 ]
+    wapy_source_versions: [ 3.13.1 ]
 
 The Python source releases to be installed.
 
@@ -114,7 +114,7 @@ with the [waco-master](https://github.com/waco-org/waco-master) role.
          - role: waco_org.waco_python
            vars:
              wapy_source_versions:
-               - 3.10.1
+               - 3.13.1
              wapy_has_sphinx: true
 
 License

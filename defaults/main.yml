@@ -1,6 +1,6 @@
 ---
 # Workstation as Code
-# Copyright Nicola Musatti 2020 - 2022.
+# Copyright Nicola Musatti 2020 - 2025.
 
 wapy_has_ansible: false
 wapy_has_mercurial: false
@@ -8,15 +8,16 @@ wapy_has_sphinx: false
 wapy_user: python
 wapy_group: "{{ wapy_user }}"
 wapy_source_versions:
-  - 3.10.6
-  # - 3.9.13
-  # - 3.8.13
-  # - 3.7.13
-  # - 3.6.15
-  # - 2.7.18
+  - 3.13.1
+  # - 3.12.8
+  # - 3.11.11
+  # - 3.10.16
+  # - 3.9.21
+  # - 3.8.20
+  # - 3.7.17
 wapy_build_root_dir: "/sw"
 wapy_install_root_dir: "/opt"
-# wapy_pip_version: 20.3.1
+# wapy_pip_version: 24.3.1
 wapy_source_packages:
   - ipython
   - pip
@@ -36,6 +37,7 @@ wapy_source_venv_packages:
   - six
   - tox
   - twine
+  - virtualenv
   - wheel
 wapy_system_venv_root_dir: "/opt"
 wapy_system_venv_prefix: "sysvenv"
@@ -44,7 +46,8 @@ wapy_ansible_packages:
   - ansible
   - ansible-lint
   - flake8
-  - molecule[docker,lint]
+  - molecule
+  - molecule-plugins[docker]
   - pytest
   - selinux
   - pytest-testinfra

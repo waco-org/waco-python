@@ -1,6 +1,6 @@
 ---
 # Workstation as Code
-# Copyright Nicola Musatti 2020 - 2022.
+# Copyright Nicola Musatti 2020 - 2025.
 
 galaxy_info:
   role_name: waco_python
@@ -10,24 +10,22 @@ galaxy_info:
   company: The Waco project
 
   license: GPLv3
-
-  min_ansible_version: "2.10"
-
+  min_ansible_version: "2.17"
   platforms:
     - name: EL
       versions:
         - "9"
         - "8"
-        - "7"
     - name: Fedora
       versions:
-        - "36"
-        - "35"
+        - "41"
+        - "40"
+        - "39"
     - name: Ubuntu
       versions:
+        - noble
         - jammy
         - focal
-        - bionic
 
   galaxy_tags: []
 

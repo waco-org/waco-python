@@ -1,6 +1,6 @@
 ---
 # Workstation as Code
-# Copyright Nicola Musatti 2020 - 2023.
+# Copyright Nicola Musatti 2020 - 2025.
 
 - name: Create the Python installation group
   ansible.builtin.group:
@@ -13,59 +13,53 @@
     group: "{{ wapy_group }}"
   become: true
 
+- name: Install GnuPG 2 (EL 10)
+  ansible.builtin.dnf:
+    name:
+      - gnupg2
+    state: present
+  become: true
+  when: wapy_platform in ('EL10')
+
 - name: Enable the EPEL repository
   ansible.builtin.include_role:
     name: geerlingguy.repo-epel
-  when: wapy_platform in ('EL7', 'EL8', 'EL9')
+  when: wapy_platform in ('EL10', 'EL9', 'EL8')
 
-- name: Install system Python (EL 9)
+- name: Check if the Code Ready Linux Builder repository is installed (EL 10, EL 9)
+  ansible.builtin.command: "crb status"
+  become: true
+  register: crb
+  changed_when: false
+  when: wapy_platform in ('EL10', 'EL9')
+
+- name: Enable the Code Ready Linux Builder repository (EL 10, EL 9)
+  ansible.builtin.command: "crb enable"
+  become: true
+  when: wapy_platform in ('EL10', 'EL9') and 'disabled' in crb.stdout
+
+- name: Install system Python
   ansible.builtin.dnf:
     name:
       - python3
     state: present
   become: true
-  when: wapy_platform in ('EL9')
-
-- name: Install system Python (EL 8, Fedora)
-  ansible.builtin.dnf:
-    name:
-      - python2
-      - python3
-    state: present
-  become: true
-  when: wapy_platform in ('EL8', 'Fedora')
-
-- name: Install system Python (EL 7)
-  ansible.builtin.yum:
-    name:
-      - python2
-      - python3
-    state: present
-  become: true
-  when: wapy_platform == 'EL7'
+  when: ansible_os_family == 'RedHat'
 
 - name: Install system Python (Ubuntu)
   ansible.builtin.apt:
     name:
-      - "{{ (ansible_distribution_version == '18.04') | ternary('python', 'python2') }}"
       - python3
     state: present
   become: true
   when: wapy_platform == 'Ubuntu'
 
-- name: "Install system Python dependencies (EL 9, EL 8, Fedora)"
+- name: "Install system Python dependencies (EL 10, EL 9, EL 8, Fedora)"
   ansible.builtin.dnf:
     name: "{{ wapy_system_python_deps }}"
     state: present
   become: true
-  when: wapy_platform in ('EL9', 'EL8', 'Fedora')
-
-- name: "Install system Python dependencies (EL 7)"
-  ansible.builtin.yum:
-    name: "{{ wapy_system_python_deps }}"
-    state: present
-  become: true
-  when: wapy_platform == 'EL7'
+  when: wapy_platform in ('EL10', 'EL9', 'EL8', 'Fedora')
 
 - name: "Install system Python dependencies (Ubuntu)"
   ansible.builtin.apt:
