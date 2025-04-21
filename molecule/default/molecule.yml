@@ -1,6 +1,8 @@
 ---
 dependency:
   name: galaxy
+  options:
+    ignore-errors: True
 driver:
   name: docker
 lint: |
