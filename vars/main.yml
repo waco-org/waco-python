@@ -48,11 +48,16 @@ wapy_platform_dependencies:
     - python3-virtualenv
     - python3-pip
 wapy_system_python_deps: "{{ wapy_platform_dependencies[wapy_platform] }}"
+wapy_fedora_newest_minors:
+  "43": "3.14"
+  "42": "3.13"
+  "41": "3.13"
 wapy_selinux_python_minors:
   EL10: "3.12"
   EL9: "3.9"
   EL8: "3.6"
-  Fedora: "{{ (ansible_distribution_major_version in ('42', '41')) | ternary('3.13', '3.12') }}"
+  # Fedora: "{{ (ansible_distribution_major_version in ('42', '41')) | ternary('3.13', '3.12') }}"
+  Fedora: "{{ wapy_fedora_newest_minors[ansible_distribution_major_version] }}"
   Ubuntu: ""
 wapy_selinux_python_minor: "{{ wapy_selinux_python_minors[wapy_platform] }}"
 wapy_ubuntu_newest_minors:
@@ -63,6 +68,7 @@ wapy_system_newest_minors:
   EL10: "3.12"
   EL9: "3.9"
   EL8: "3.6"
-  Fedora: "{{ (ansible_distribution_major_version in ('42', '41')) | ternary('3.13', '3.12') }}"
+  # Fedora: "{{ (ansible_distribution_major_version in ('42', '41')) | ternary('3.13', '3.12') }}"
+  Fedora: "{{ wapy_fedora_newest_minors[ansible_distribution_major_version] }}"
   Ubuntu: "{{ wapy_ubuntu_newest_minors[ansible_distribution_major_version] }}"
 wapy_system_newest_minor: "{{ wapy_system_newest_minors[wapy_platform] }}"

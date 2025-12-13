@@ -14,13 +14,13 @@ galaxy_info:
   platforms:
     - name: EL
       versions:
+        - "10"
         - "9"
-        - "8"
     - name: Fedora
       versions:
+        - "43"
         - "42"
         - "41"
-        - "40"
     - name: Ubuntu
       versions:
         - noble
