@@ -57,7 +57,7 @@ wapy_selinux_python_minors:
   EL9: "3.9"
   EL8: "3.6"
   # Fedora: "{{ (ansible_distribution_major_version in ('42', '41')) | ternary('3.13', '3.12') }}"
-  Fedora: "{{ wapy_fedora_newest_minors[ansible_distribution_major_version] }}"
+  Fedora: "{{ ((ansible_distribution_major_version == '43') | ternary('3.14', ((ansible_distribution_major_version == '42') | ternary('3.13','3.12')))) }}"
   Ubuntu: ""
 wapy_selinux_python_minor: "{{ wapy_selinux_python_minors[wapy_platform] }}"
 wapy_ubuntu_newest_minors:
